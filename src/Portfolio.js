@@ -57,27 +57,36 @@ function Portfolio(props) {
     img: "https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/events-state/filter/img/place200x290_3.png",
     category: "Flayers"
   }];
-  let masF = [];
-  let masS = [];
-  let masT = [];
+  let masFirst = [];
+  let masSecond = [];
+  let masThird = [];
+
   for (let index = 0; index < list.length; index++) {
     const element = list[index];
     if (index < 6) {
-      masF.push(element);
+      masFirst.push(element);
     } else if (index > 5 && index < 11) {
-      masS.push(element);
+      masSecond.push(element);
     } else if (index > 10) {
-      masT.push(element);
+      masThird.push(element);
     }
   }
+  const [masFirstState, setFirst] = useState(masFirst);
+  const [masSecondState, setSecond] = useState(masSecond);
+  const [masThirdState, setThird] = useState(masThird);
 
-  if (selected !== "All") {
-    masF = masF.filter(o => o.category === selected);
-    masS = masS.filter(o => o.category === selected);
-    masT = masT.filter(o => o.category === selected);
-  }
   const onSelectFilter = (e) => {
-    setState(e.currentTarget.innerText)
+    console.log(e.currentTarget.getAttribute("select"))
+    console.log(selected)
+    setState(e.currentTarget.getAttribute("select"));
+    if (e.currentTarget.getAttribute("select") !== "All") {
+      masFirst = masFirst.filter(o => o.category === e.currentTarget.getAttribute("select"));
+      masSecond = masSecond.filter(o => o.category === e.currentTarget.getAttribute("select"));
+      masThird = masThird.filter(o => o.category === e.currentTarget.getAttribute("select"));
+    }
+    setFirst(masFirst);
+    setSecond(masSecond);
+    setThird(masThird);
   }
 
   return (
@@ -85,9 +94,9 @@ function Portfolio(props) {
       <Toolbar
         filters={["All", "Websites", "Flayers", "Business Cards"]}
         selected={selected}
-        onSelectFilter={onSelectFilter}
+        onSelectFilter={(e) => onSelectFilter(e)}
       />
-      <ProjectList masF={masF} masS={masS} masT={masT} /></div>
+      <ProjectList masF={masFirstState} masS={masSecondState} masT={masThirdState} /></div>
   );
 }
 export default Portfolio;
